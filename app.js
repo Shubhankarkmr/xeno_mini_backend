@@ -36,7 +36,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: FRONTEND_URL || "http://localhost:5173",
+    origin: FRONTEND_URL,
     credentials: true, // ✅ send HttpOnly cookies
   })
 );
