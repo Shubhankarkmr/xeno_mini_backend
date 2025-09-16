@@ -19,7 +19,7 @@ const app = express();
 // Middleware
 app.use(express.json());
 app.use(cors({
-  origin: ['http://localhost:5173', 'https://xeno-mini-frontend.vercel.app'],
+  origin: process.env.FRONTEND_URL,
   credentials: true
 }));
 
