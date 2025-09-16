@@ -18,17 +18,11 @@ const app = express();
 
 // Middleware
 app.use(express.json());
-app.use(
-  cors({
-    origin: "https://xeno-mini-frontend.vercel.app", // your frontend
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,
-  })
-);
+app.use(cors({
+  origin: ['http://localhost:5173', 'https://xeno-mini-frontend.vercel.app'],
+  credentials: true
+}));
 
-if (process.env.NODE_ENV === "development") {
-  app.use(morgan("dev"));
-}
 
 // ✅ Initialize Passport (Google OAuth) properly
 require("./config/passport")(passport);
