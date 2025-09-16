@@ -19,23 +19,23 @@ const app = express();
 // Middleware
 app.use(express.json());
 
-// ✅ Allowed origins (Frontend on Vercel + Localhost for dev)
+// ✅ Correct CORS setup
 const allowedOrigins = [
-  "http://localhost:5173",                   // local dev
-  "https://xeno-mini-frontend.vercel.app",  // deployed frontend
+  "http://localhost:5173",                  // local frontend
+  "https://xeno-mini-frontend.vercel.app", // deployed frontend
 ];
 
 app.use(
   cors({
     origin: function (origin, callback) {
-      if (!origin) return callback(null, true); // allow non-browser clients
+      if (!origin) return callback(null, true); // allow Postman, curl, etc.
       if (allowedOrigins.includes(origin)) {
         return callback(null, true);
       } else {
         return callback(new Error("Not allowed by CORS"));
       }
     },
-    credentials: true, // allow cookies/auth headers
+    credentials: true,
   })
 );
 
@@ -68,7 +68,6 @@ process.on("unhandledRejection", (err) => {
   console.error("Unhandled Rejection:", err);
 });
 
+// Start server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () =>
-  console.log(`🚀 Server running on port ${PORT}`)
-);
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
