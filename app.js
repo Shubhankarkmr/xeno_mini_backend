@@ -19,22 +19,11 @@ const app = express();
 // Middleware
 app.use(express.json());
 
-// ✅ Correct CORS setup
-const allowedOrigins = [
-  "http://localhost:5173",                  // local frontend
-  "https://xeno-mini-frontend.vercel.app", // deployed frontend
-];
-
+// CORS (allow frontend from Vercel)
 app.use(
   cors({
-    origin: function (origin, callback) {
-      if (!origin) return callback(null, true); // allow Postman, curl, etc.
-      if (allowedOrigins.includes(origin)) {
-        return callback(null, true);
-      } else {
-        return callback(new Error("Not allowed by CORS"));
-      }
-    },
+    origin: "https://xeno-mini-frontend.vercel.app",
+    methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
 );
@@ -44,7 +33,8 @@ if (process.env.NODE_ENV === "development") {
 }
 
 // Initialize Passport (Google OAuth)
-require("./config/passport")(); // configure Google strategy
+// IMPORTANT: path fixed inside config/passport.js → "../models/User"
+require("./config/passport")(); 
 app.use(passport.initialize());
 
 // Routes
@@ -68,6 +58,7 @@ process.on("unhandledRejection", (err) => {
   console.error("Unhandled Rejection:", err);
 });
 
-// Start server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+app.listen(PORT, () =>
+  console.log(`🚀 Server running on port ${PORT}`)
+);
