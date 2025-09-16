@@ -1,6 +1,6 @@
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
-const User = require("./models/User.js");
+const User = require("../models/User.js"); // ✅ fixed relative path
 const jwt = require("jsonwebtoken");
 
 const {
@@ -22,6 +22,7 @@ passport.use(
     async (accessToken, refreshToken, profile, done) => {
       try {
         let user = await User.findOne({ googleId: profile.id });
+
         if (!user) {
           user = await User.create({
             googleId: profile.id,
@@ -30,6 +31,7 @@ passport.use(
             picture: profile.photos?.[0]?.value || "",
           });
         }
+
         return done(null, user);
       } catch (err) {
         return done(err, null);
@@ -39,6 +41,3 @@ passport.use(
 );
 
 module.exports = passport;
-
-
-
