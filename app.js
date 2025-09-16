@@ -31,7 +31,7 @@ if (process.env.NODE_ENV === "development") {
 }
 
 // Initialize Passport (Google OAuth)
-require("./config/passport")(); // call the function to configure strategy
+require("./config/passport"); // call the function to configure strategy
 app.use(passport.initialize());
 
 // Routes
